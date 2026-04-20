@@ -34,35 +34,11 @@ export const Route = createRootRouteWithContext<{}>()({
 
 function Navigation() {
   const { user, logout, isLoading } = useAuth();
-  const [isDark, setIsDark] = useState(true);
 
   useEffect(() => {
-    // Initial theme check
-    const savedTheme = localStorage.getItem('smarthire_theme');
-    const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-    
-    const shouldBeDark = savedTheme ? savedTheme === 'dark' : systemPrefersDark;
-    
-    if (shouldBeDark) {
-      document.documentElement.classList.add('dark');
-      setIsDark(true);
-    } else {
-      document.documentElement.classList.remove('dark');
-      setIsDark(false);
-    }
+    // Force dark mode
+    document.documentElement.classList.add('dark');
   }, []);
-
-  const toggleTheme = () => {
-    const newDark = !isDark;
-    if (newDark) {
-      document.documentElement.classList.add('dark');
-      localStorage.setItem('smarthire_theme', 'dark');
-    } else {
-      document.documentElement.classList.remove('dark');
-      localStorage.setItem('smarthire_theme', 'light');
-    }
-    setIsDark(newDark);
-  };
   
   return (
     <nav className="border-b border-border bg-card/50 px-6 py-4 flex justify-between items-center backdrop-blur-md sticky top-0 z-50 transition-colors">
@@ -70,9 +46,6 @@ function Navigation() {
         <span className="text-accent">✧</span> SmartHire AI
       </Link>
       <div className="flex items-center gap-4 text-sm font-medium">
-        <button onClick={toggleTheme} className="p-2 rounded-full bg-muted/50 hover:bg-muted text-foreground transition-colors mr-2">
-          {isDark ? <Sun className="size-4" /> : <Moon className="size-4" />}
-        </button>
         <Link to="/notes" className="text-accent hover:text-foreground transition-colors flex items-center gap-1">
           <span className="bg-accent/20 px-2 py-0.5 rounded text-xs font-mono">Python API</span> Team Notes
         </Link>
